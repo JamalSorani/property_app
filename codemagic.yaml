@@ -1,0 +1,29 @@
+workflows:
+  sample-workflow:
+    name: Build With Push Telegram
+    max_build_duration: 120
+    instance_type: mac_mini_m1
+    environment:
+      flutter: 3.10.4
+      groups:
+        - QA
+
+    triggering:
+      events:
+        - push
+
+    scripts:
+      - name: Set up local.properties
+        script: |
+          echo "flutter.sdk=$HOME/programs/flutter" > "$CM_BUILD_DIR/android/local.properties"
+      - name: Get Flutter packages
+        script: |
+          flutter packages pub get
+      - name: Build APK with Flutter
+        script: |
+          flutter build apk --release
+      - name: Upload To Telegram
+        script: |
+          curl -v -F chat_id=$CHATID -F document=@build/app/outputs/flutter-apk/app-release.apk -F caption="Jencacom" https://api.telegram.org/bot$APP_TOKEN/sendDocument
+    artifacts:
+        - build/**/outputs/**/*.apk

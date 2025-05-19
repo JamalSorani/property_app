@@ -86,7 +86,7 @@ dependencies:
 
 
 dependency_overrides:
-  flutter_local_notifications: ^18.0.1  
+  # flutter_local_notifications: ^18.0.1  
   package_info_plus: 8.1.0  
   dio: ^5.7.0
   path_provider_linux: 2.1.11
